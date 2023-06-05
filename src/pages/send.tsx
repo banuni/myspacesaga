@@ -14,6 +14,10 @@ const inputStyles = {
   borderColor: "red",
   borderRadius: "15px",
   borderWidth: "2px",
+  color: "white",
+  _focus: {
+    borderColor: "white",
+  },
 };
 
 const Page = () => {

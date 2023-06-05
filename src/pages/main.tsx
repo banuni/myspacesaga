@@ -1,7 +1,6 @@
 import { Avatar, Box, Center, Flex, Grid, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-
 const Page = () => {
   const [showOrigin, setShowOrigin] = useState(false);
   const faction = "Totachim";
@@ -14,7 +13,12 @@ const Page = () => {
       <Flex direction="column" h="100%" justifyContent="space-between">
         <Center>
           <Box textAlign="center" pb="30px">
-            <Avatar size="3xl" src="https://blogscdn.thehut.net/app/uploads/sites/571/2020/09/Viking-beard-main_1630574627.jpg"/>
+            <Avatar
+              height="200px"
+              width="200px"
+              src="https://blogscdn.thehut.net/app/uploads/sites/571/2020/09/Viking-beard-main_1630574627.jpg"
+              ignoreFallback
+            />
             <Text mt="20px" color="gray" fontWeight="400" fontSize="26px">
               {name}
             </Text>

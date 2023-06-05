@@ -11,6 +11,9 @@ export const theme = extendTheme({
     components: {
         Button: {
             baseStyle: {
+                _active: {
+                    backgroundColor: 'none'
+                },
                 backgroundColor: "transparent",
                 color: "white",
                 padding: 0,
@@ -32,6 +35,9 @@ export const theme = extendTheme({
             },
         },
         Text: {
+            baseStyle: {
+                color: 'white'
+            },
             defaultProps: {
                 variant: "primary",
             },
@@ -45,13 +51,21 @@ export const theme = extendTheme({
                     fontSize: '20px'
                 },
                 action: {
+                    userSelect: 'none',
                     color: 'red',
-                    fontSize: '20px'
+                    fontSize: '20px',
+                    _hover: {
+                        color: 'white'
+                    }
                 },
                 title: {
                     fontSize: "24px",
                     color: "white",
                 },
+                menuItem: {
+                    fontSize: "22px",
+                    lineHeight: "32px",
+                }
             },
         },
     },
