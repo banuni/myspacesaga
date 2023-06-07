@@ -29,7 +29,7 @@ const Page = () => {
               ignoreFallback
             />
             <Text mt="20px" color="gray" fontWeight="400" fontSize="26px">
-              {userData?.user.name}
+              {userData?.user?.name}
             </Text>
           </Box>
         </Center>
