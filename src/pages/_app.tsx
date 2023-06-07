@@ -1,5 +1,3 @@
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -7,14 +5,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "~/components/Layout";
 import { theme } from "~/theme/theme";
 import { orbitron } from "~/theme/font";
+import { ClerkProvider } from "@clerk/nextjs";
 
-
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <SessionProvider session={session}>
+    <ClerkProvider {...pageProps}>
       <ChakraProvider theme={theme}>
         <main className={orbitron.className}>
           <Layout>
@@ -22,7 +17,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           </Layout>
         </main>
       </ChakraProvider>
-    </SessionProvider>
+    </ClerkProvider>
   );
 };
 

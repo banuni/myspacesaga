@@ -18,8 +18,8 @@ const Layout = ({ children }: PropsWithChildren) => {
       <Box
         className=""
         background="radial-gradient(circle, rgba(60,59,64,1) 0%,  rgba(24,47,41,1) 11%, rgba(0,4,28,1) 100%)"
-        w="100vw"
-        h="100vh"
+        w="100%"
+        h="100%"
       >
         <Flex justifyContent="space-evenly" alignItems="center" p="20px" h="185px">
           <Image src={novaLogo} alt="" width="145" />

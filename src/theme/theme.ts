@@ -48,7 +48,7 @@ export const theme = extendTheme({
                 },
                 secondary: {
                     color: 'gray',
-                    fontSize: '20px'
+                    fontSize: '18px'
                 },
                 action: {
                     userSelect: 'none',
