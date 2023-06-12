@@ -1,13 +1,26 @@
 import type { PropsWithChildren } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Link } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
 import novaLogo from "./nova_log.png";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+
+const ADMIN_EMAILS = ["nuni@kovrr.com"];
 
 const Layout = ({ children }: PropsWithChildren) => {
-  const { route } = useRouter();
+  const { route, push } = useRouter();
+  const { data: user, isLoading } = api.user.get.useQuery();
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+  const isCreating = !user;
+  if (route !== "/create" && isCreating) {
+    void push("/create");
+  }
+  const isAdmin = ADMIN_EMAILS.includes(user?.user?.email || "");
+
   return (
     <>
       <Head>
@@ -21,7 +34,12 @@ const Layout = ({ children }: PropsWithChildren) => {
         w="100%"
         h="100%"
       >
-        <Flex justifyContent="space-evenly" alignItems="center" p="20px" h="185px">
+        <Flex
+          justifyContent="space-evenly"
+          alignItems="center"
+          p="20px"
+          h="185px"
+        >
           <Image src={novaLogo} alt="" width="145" />
           <Text variant="title" textAlign="center">
             A Safe realm for all Factions
@@ -35,21 +53,42 @@ const Layout = ({ children }: PropsWithChildren) => {
           p="5px"
           alignItems="center"
         >
-          <Button variant={route === "/main" ? "active" : undefined}>
-            <Link href="/main">Main</Link>
+          <Button
+            as={isCreating ? undefined : NextLink}
+            href="/main"
+            variant={route === "/main" ? "active" : undefined}
+            isDisabled={isCreating}
+          >
+            Main
           </Button>
-          <Button variant={route === "/send" ? "active" : undefined}>
-            <Link href="/send">Send LNX</Link>
+          <Button
+            as={isCreating ? undefined : NextLink}
+            href="/send"
+            variant={route === "/send" ? "active" : undefined}
+          >
+            Send LNX
           </Button>
-          <Button variant={route === "/balcony" ? "active" : undefined}>
-            <Link href="/balcony">Star Balcony</Link>
+          <Button
+            as={isCreating ? undefined : NextLink}
+            href="/balcony"
+            variant={route === "/balcony" ? "active" : undefined}
+          >
+            Star Balcony
           </Button>
-          <Button variant={route === "/admin" ? "active" : undefined}>
-            <Link href="/admin">Admin</Link>
-          </Button>
-          <Button variant={route === "/create" ? "active" : undefined}>
-            <Link href="/create">Create</Link>
-          </Button>
+          {isAdmin && (
+            <Button
+              as={NextLink}
+              href="/admin"
+              variant={route === "/admin" ? "active" : undefined}
+            >
+              Admin
+            </Button>
+          )}
+          {isCreating && (
+            <Button variant={route === "/create" ? "active" : undefined}>
+              Create
+            </Button>
+          )}
         </Flex>
         <Box h="calc(100% - 235px)">{children}</Box>
       </Box>

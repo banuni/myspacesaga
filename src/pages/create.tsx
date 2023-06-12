@@ -5,56 +5,85 @@ import {
   FormControl,
   Input,
   Button,
+  Box,
+  Text,
 } from "@chakra-ui/react";
 import { api } from "~/utils/api";
+import { inputStyle } from "~/theme/theme";
+import { useRouter } from "next/router";
 
-type FormValues = { name: string; faction: string; origin: string}
+type FormValues = { name: string; faction: string; origin: string };
 
-export default function HookForm() {
+export default function CreationPage() {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-  const {mutate: createUser} = api.user.create.useMutation()
+  const router = useRouter()
+  const { mutateAsync: createUser } = api.user.create.useMutation();
 
-  function onSubmit(values: FormValues) {
-    createUser(values);
+  async function onSubmit(values: FormValues) {
+    await createUser(values);
+    await router.push('/main')
   }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl>
-        <FormLabel htmlFor="name">First name</FormLabel>
-        <Input
-          id="name"
-          placeholder="name"
-          {...register("name", {
-            required: "This is required",
-          })}
-        />
-        <Input
-          id="faction"
-          placeholder="faction"
-          {...register("faction", {
-            required: "This is required",
-          })}
-        />
-        <Input
-          id="origin"
-          placeholder="origin"
-          {...register("origin", {
-            required: "This is required",
-          })}
-        />
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
-      </FormControl>
-      <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
-        Submit
-      </Button>
-    </form>
+    <Box p="20px">
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl>
+          <FormLabel htmlFor="name">
+            <Text>Character Name</Text>
+          </FormLabel>
+          <Input
+            {...inputStyle}
+            id="name"
+            placeholder="Captain Aziz Jamili"
+            {...register("name", {
+              required: "This is required",
+            })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="faction">
+            <Text>Faction</Text>
+          </FormLabel>
+          <Input
+            {...inputStyle}
+            id="faction"
+            placeholder="Space Marines"
+            {...register("faction", {
+              required: "This is required",
+            })}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="origin">
+            <Text>Origin</Text>
+          </FormLabel>
+          <Input
+            {...inputStyle}
+            id="origin"
+            placeholder="Sector ﬁ"
+            {...register("origin", {
+              required: "This is required",
+            })}
+          />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Button
+          variant="primary"
+          mt={4}
+          colorScheme="teal"
+          isLoading={isSubmitting}
+          type="submit"
+        >
+          Submit
+        </Button>
+      </form>
+    </Box>
   );
 }

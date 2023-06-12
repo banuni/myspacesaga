@@ -1,8 +1,10 @@
+import { sql } from 'drizzle-orm';
 import { int, mysqlTable, serial, varchar, boolean } from 'drizzle-orm/mysql-core';
 
 export const users = mysqlTable('user', {
   id: serial('id').primaryKey(),
-  userId: varchar('userId', { length: 256 }),
+  userId: varchar('userId', { length: 256 }).notNull(),
+  walletId: varchar('walletId', {length: 256}).notNull(),
   name: varchar('name', { length: 256 }),
   email: varchar('email', { length: 256 }),
   faction: varchar('faction', { length: 256 }),
@@ -13,7 +15,7 @@ export const users = mysqlTable('user', {
 
 export const transactions = mysqlTable('trx', {
   id: serial('id').primaryKey(),
-  trxId: varchar('trxId', { length: 256 }),
+  trxId: varchar('trxId', { length: 256 }).notNull(),
   amount: int('amount').notNull(),
   from: varchar('from', { length: 256 }), // from user
   to: varchar('to', { length: 256 }), // to user

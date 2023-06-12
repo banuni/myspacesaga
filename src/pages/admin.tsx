@@ -1,4 +1,15 @@
-import { Table, Tbody, Td, Th, Thead, Tr, chakra, Text } from "@chakra-ui/react";
+import {
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  chakra,
+  Text,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 import {
@@ -11,6 +22,7 @@ import { api } from "~/utils/api";
 
 function AdminPage() {
   const users = api.admin.users.useQuery();
+  const { mutate: addFunds } = api.admin.addFunds.useMutation();
   type User = Exclude<typeof users.data, undefined>[number];
   const columnHelper = createColumnHelper<User>();
   const table = useReactTable({
@@ -21,13 +33,37 @@ function AdminPage() {
         id: "name",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
+      columnHelper.accessor((row) => row.walletId, {
+        id: "walletId",
+        cell: (info) => <span>{info.getValue()}</span>,
+      }),
       columnHelper.accessor((row) => row.email, {
         id: "email",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
       columnHelper.accessor((row) => row.balance, {
         id: "balance",
-        cell: (info) => <span>{info.getValue()}</span>,
+        cell: (info) => {
+          return <span>{info.getValue()}</span>;
+        },
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: (info) => {
+          const userId = info.row.original.userId;
+          const add5 = () => addFunds({ userId, amount: 5 });
+          const add10 = () => addFunds({ userId, amount: 10 });
+          return (
+            <Flex gap="5px">
+              <Button variant="primary" onClick={add5}>
+                Add 5
+              </Button>
+              <Button variant="primary" onClick={add10}>
+                Add 10
+              </Button>
+            </Flex>
+          );
+        },
       }),
     ],
   });
@@ -38,13 +74,10 @@ function AdminPage() {
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
-              //   const meta: any = header.column.columnDef.meta;
               return (
                 <Th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-                  //   isNumeric={meta?.isNumeric}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -70,7 +103,6 @@ function AdminPage() {
         {table.getRowModel().rows.map((row) => (
           <Tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
               return (
                 <Td key={cell.id}>
                   <Text>

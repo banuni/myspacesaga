@@ -8,7 +8,10 @@ import {
   GridItem,
   NumberInputField,
   NumberInput,
+  Button,
 } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
 
 const inputStyles = {
   borderColor: "red",
@@ -20,9 +23,20 @@ const inputStyles = {
   },
 };
 
+type FormValues = {
+  amount: number;
+  walletId: string;
+};
 const Page = () => {
-  const walletId = "1234421";
-  const balance = 400;
+  const { data: user } = api.user.get.useQuery();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>();
+  const { mutate: sendLnx } = api.user.transferTo.useMutation();
+  const walletId = user?.user?.walletId;
+  const balance = user?.user?.balance;
   const log = [
     "Sent 100 to Wallet ID 4444333 at 04:04:04",
     "Sent 100 to Wallet ID 4444333 at 04:04:04",
@@ -32,6 +46,10 @@ const Page = () => {
     "Sent 100 to Wallet ID 4444333 at 04:04:04",
     "Sent 100 to Wallet ID 4444333 at 04:04:04",
   ];
+  const onSubmit = (v: FormValues) => {
+    const { walletId, amount } = v;
+    sendLnx({ target: walletId, amount });
+  };
   return (
     <Flex h="100%" direction="column">
       <Box p="20px">
@@ -47,33 +65,46 @@ const Page = () => {
             <Text variant="secondary">LNX Balance</Text>
           </Box>
         </Center>
-        <Grid
-          templateRows="repeat(2, 1fr)"
-          templateColumns="2fr 2fr 1fr"
-          rowGap="10px"
-        >
-          <GridItem>
-            <Text>Wallet ID</Text>
-          </GridItem>
-          <GridItem>
-            <Input name="walletId" {...inputStyles} />
-          </GridItem>
-          <GridItem rowSpan={2}>
-            <Box h="100%">
-              <Text textAlign="center" variant="action" w="100px">
-                Send LNX!
-              </Text>
-            </Box>
-          </GridItem>
-          <GridItem>
-            <Text>Amount</Text>
-          </GridItem>
-          <GridItem>
-            <NumberInput>
-              <NumberInputField name="amount" {...inputStyles} />
-            </NumberInput>
-          </GridItem>
-        </Grid>
+        {/*  eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            templateRows="repeat(2, 1fr)"
+            templateColumns="2fr 2fr 1fr"
+            rowGap="10px"
+          >
+            <GridItem>
+              <Text>Wallet ID</Text>
+            </GridItem>
+            <GridItem>
+              <Input {...inputStyles} {...register("walletId")} />
+            </GridItem>
+            <GridItem rowSpan={2}>
+              <Box h="100%">
+                <Button
+                  textAlign="center"
+                  variant="action"
+                  w="100px"
+                  isLoading={isSubmitting}
+                  type="submit"
+                >
+                  Send LNX!
+                </Button>
+              </Box>
+            </GridItem>
+            <GridItem>
+              <Text>Amount</Text>
+            </GridItem>
+            <GridItem>
+              <NumberInput>
+                <NumberInputField
+                  type="number"
+                  {...register("amount", { valueAsNumber: true })}
+                  {...inputStyles}
+                />
+              </NumberInput>
+            </GridItem>
+          </Grid>
+        </form>
       </Box>
       <Text mt="20px" ml="20px" mb="5px">
         LNX Log

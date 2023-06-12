@@ -7,8 +7,8 @@ const Page = () => {
   const [showOrigin, setShowOrigin] = useState(false);
   const user = useUser();
   const { signOut } = useAuth();
-  const { data: userData } = api.user.getUser.useQuery();
-  const { mutate: update } = api.user.updateUser.useMutation();
+  const { data: userData } = api.user.get.useQuery();
+  const { mutate: update } = api.user.update.useMutation();
   if (!user) {
     return <SignIn />;
   }
