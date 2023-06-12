@@ -44,6 +44,12 @@ const Layout = ({ children }: PropsWithChildren) => {
           <Button variant={route === "/balcony" ? "active" : undefined}>
             <Link href="/balcony">Star Balcony</Link>
           </Button>
+          <Button variant={route === "/admin" ? "active" : undefined}>
+            <Link href="/admin">Admin</Link>
+          </Button>
+          <Button variant={route === "/create" ? "active" : undefined}>
+            <Link href="/create">Create</Link>
+          </Button>
         </Flex>
         <Box h="calc(100% - 235px)">{children}</Box>
       </Box>

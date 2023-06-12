@@ -5,6 +5,9 @@ export const users = mysqlTable('user', {
   userId: varchar('userId', { length: 256 }),
   name: varchar('name', { length: 256 }),
   email: varchar('email', { length: 256 }),
+  faction: varchar('faction', { length: 256 }),
+  origin: varchar('origin', { length: 256 }),
+  rank: varchar('rank', { length: 256 }),
   balance: int('balance').default(0)
 });
 

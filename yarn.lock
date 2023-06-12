@@ -364,6 +364,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^2.0.19":
+  version: 2.0.19
+  resolution: "@chakra-ui/icons@npm:2.0.19"
+  dependencies:
+    "@chakra-ui/icon": 3.0.16
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0"
+    react: ">=18"
+  checksum: 343a55d853c0b7c566ea5831dabfdfa4d5e6e88069ba3966189fab6d62671ba732fb3cab42b97c61db8d4488b279b8f6555fa096ae4cad2b96c33cc1fc13dc27
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:2.0.16":
   version: 2.0.16
   resolution: "@chakra-ui/image@npm:2.0.16"
@@ -1818,6 +1830,25 @@ __metadata:
     react-native:
       optional: true
   checksum: aea231af648688c5eafdbbda0667034221cca8b77e00690ab54950b7cc0296d14646931aee44fc5f18d5ce4d683b5d234b053eed5c0a5c340bbbacdab873a70b
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-table@npm:^8.9.2":
+  version: 8.9.2
+  resolution: "@tanstack/react-table@npm:8.9.2"
+  dependencies:
+    "@tanstack/table-core": 8.9.2
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 66473ee4f34c7ade6a269c6821dadf228a04e9ce76bedfa6a30bb48608f26023bb2c2b9a45cc3f2323212d676bb26f7a820cb3328c8cd37bd7369d5651fe9628
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.9.2":
+  version: 8.9.2
+  resolution: "@tanstack/table-core@npm:8.9.2"
+  checksum: eac43f6a95a08e2edae3f66b31e78b50b826507808ba32aa2fc2fae495aa4d9cdf97a7a1b745c647fdd9ec0c2559971e26df23a98720e0a959681be1caa35f26
   languageName: node
   linkType: hard
 
@@ -4907,6 +4938,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "myspacesaga@workspace:."
   dependencies:
+    "@chakra-ui/icons": ^2.0.19
     "@chakra-ui/next-js": ^2.1.4
     "@chakra-ui/react": ^2.7.0
     "@clerk/nextjs": ^4.19.1
@@ -4915,6 +4947,7 @@ __metadata:
     "@planetscale/database": ^1.7.0
     "@t3-oss/env-nextjs": ^0.3.1
     "@tanstack/react-query": ^4.29.7
+    "@tanstack/react-table": ^8.9.2
     "@trpc/client": ^10.26.0
     "@trpc/next": ^10.26.0
     "@trpc/react-query": ^10.26.0
@@ -4934,6 +4967,7 @@ __metadata:
     next: ^13.4.2
     react: 18.2.0
     react-dom: 18.2.0
+    react-hook-form: ^7.44.3
     superjson: 1.12.2
     typescript: ^5.0.4
     zod: ^3.21.4
@@ -5417,6 +5451,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f4c696bdbde5008560388622b994c00502d1faeeabff32b02964770c8c020208872f5f6b914b249a8bf3e97cc12e58bb0d227cd33460093654156b7b7f4c8d76
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.44.3":
+  version: 7.44.3
+  resolution: "react-hook-form@npm:7.44.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 8dc97e705d28d842c60fd79b0f07b8b045c458c234e3bf422baab87a844d0ebecbdf3e349538eaaa5c12366cd85169f60a52ed84dd31cdd99729899e424548bf
   languageName: node
   linkType: hard
 
