@@ -14,7 +14,12 @@ export const adminRouter = createTRPCRouter({
     // make sure userId is admin
     const res = await db.select().from(users).limit(30);
     return res;
-
+  }),
+  deleteUser: privateProcedure.input(z.object({
+    internalId: z.number().int()
+  })).mutation(async ({ input: { internalId } }) => {
+    //make sure ctx.userId is an admin
+    await db.delete(users).where(eq(users.id, internalId))
   }),
   addFunds: privateProcedure.input(z.object({
     amount: z.number().min(0),

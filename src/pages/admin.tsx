@@ -22,7 +22,9 @@ import { api } from "~/utils/api";
 
 function AdminPage() {
   const users = api.admin.users.useQuery();
-  const { mutate: addFunds } = api.admin.addFunds.useMutation();
+  const utils = api.useContext();
+  const { mutate: addFunds } = api.admin.addFunds.useMutation({ onSuccess: () => utils.admin.users.invalidate()});
+  const { mutate: deleteUser} = api.admin.deleteUser.useMutation({ onSuccess: () => utils.admin.users.invalidate()})
   type User = Exclude<typeof users.data, undefined>[number];
   const columnHelper = createColumnHelper<User>();
   const table = useReactTable({
@@ -51,8 +53,10 @@ function AdminPage() {
         id: "actions",
         cell: (info) => {
           const userId = info.row.original.userId;
+          const internalId = info.row.original.id;
           const add5 = () => addFunds({ userId, amount: 5 });
           const add10 = () => addFunds({ userId, amount: 10 });
+          
           return (
             <Flex gap="5px">
               <Button variant="primary" onClick={add5}>
@@ -60,6 +64,9 @@ function AdminPage() {
               </Button>
               <Button variant="primary" onClick={add10}>
                 Add 10
+              </Button>
+              <Button onClick={() => deleteUser({ internalId })}>
+                Delete User
               </Button>
             </Flex>
           );

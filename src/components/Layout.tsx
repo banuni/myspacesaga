@@ -7,7 +7,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
-const ADMIN_EMAILS = ["nuni@kovrr.com"];
+const ADMIN_EMAILS = ["nuni@kovrr.com", "yoav.buddy@gmail.com"];
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { route, push } = useRouter();

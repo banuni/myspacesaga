@@ -9,6 +9,7 @@ import { eq, sql } from "drizzle-orm";
 import { clerkClient } from "@clerk/nextjs";
 import { faker } from '@faker-js/faker';
 import { createId } from '@paralleldrive/cuid2';
+import { TRPCError } from "@trpc/server";
 
 
 export const userRouter = createTRPCRouter({
@@ -25,8 +26,8 @@ export const userRouter = createTRPCRouter({
       user: q2[0], isNew: true
     }
   }),
-  update: privateProcedure.mutation(async ({ ctx }) => {
-    await db.update(users).set({ name: "teruf 22" }).where(eq(users.userId, ctx.userId));
+  update: privateProcedure.mutation(({ ctx }) => {
+    // await db.update(users).set({ name: "teruf 22" }).where(eq(users.userId, ctx.userId));
     return {}
   }),
   transferTo: privateProcedure.input(z.object({
@@ -34,14 +35,14 @@ export const userRouter = createTRPCRouter({
     amount: z.number().min(1, 'must transfer a positive, whole number'),
   })).mutation(async ({ input: { amount, target }, ctx: { userId } }) => {
     await db.transaction(async (tx) => {
-      const targetValidQ = await tx.select({ count: sql<number>`count(*)` }).from(users).where(eq(users.walletId, target))
-      const targetValid = targetValidQ[0]?.count === 1
+      const targetValidQ = await tx.select({ count: sql<string>`count(*)` }).from(users).where(eq(users.walletId, target))
+      const targetValid = targetValidQ[0]?.count === '1'
       if (!targetValid) {
-        return "no target"
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No such wallet' })
       }
-      const haveFunds = await tx.select({ haveFunds: sql<boolean>`${users.balance} >= ${amount} ` }).from(users).where(eq(users.userId, target))
+      const haveFunds = await tx.select({ haveFunds: sql<boolean>`${users.balance} >= ${amount} ` }).from(users).where(eq(users.userId, userId))
       if (!haveFunds[0]?.haveFunds) {
-        return "no funds"
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not enough funds' })
       }
       await tx.update(users).set({ 'balance': sql`${users.balance} - ${amount}` }).where(eq(users.userId, userId))
       await tx.update(users).set({ 'balance': sql`${users.balance} + ${amount}` }).where(eq(users.walletId, target))
