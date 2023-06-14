@@ -11,15 +11,15 @@ const ADMIN_EMAILS = ["nuni@kovrr.com", "yoav.buddy@gmail.com"];
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { route, push } = useRouter();
-  const { data: user, isLoading } = api.user.get.useQuery();
-  if (isLoading) {
+  const { data: userData, isLoading } = api.user.get.useQuery();
+  if (isLoading || !userData) {
     return <>Loading...</>;
   }
-  const isCreating = !user;
+  const isCreating = userData.isNew;
   if (route !== "/create" && isCreating) {
     void push("/create");
   }
-  const isAdmin = ADMIN_EMAILS.includes(user?.user?.email || "");
+  const isAdmin = ADMIN_EMAILS.includes(userData.user?.email || "");
 
   return (
     <>
@@ -65,6 +65,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             as={isCreating ? undefined : NextLink}
             href="/send"
             variant={route === "/send" ? "active" : undefined}
+            isDisabled={isCreating}
           >
             Send LNX
           </Button>
@@ -72,6 +73,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             as={isCreating ? undefined : NextLink}
             href="/balcony"
             variant={route === "/balcony" ? "active" : undefined}
+            isDisabled={isCreating}
           >
             Star Balcony
           </Button>

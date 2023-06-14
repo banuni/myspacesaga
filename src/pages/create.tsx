@@ -21,10 +21,12 @@ export default function CreationPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
   const router = useRouter()
+  const utils = api.useContext()
   const { mutateAsync: createUser } = api.user.create.useMutation();
 
   async function onSubmit(values: FormValues) {
     await createUser(values);
+    await utils.user.invalidate();
     await router.push('/main')
   }
 
