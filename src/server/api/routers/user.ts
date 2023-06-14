@@ -53,6 +53,7 @@ export const userRouter = createTRPCRouter({
     name: z.string().min(1, 'Need a name...'),
     faction: z.string().min(1, 'Need a faction...'),
     origin: z.string().min(1, 'Need an origin...'),
+    rank: z.string().min(1, 'Need a rank...'),
   })).mutation(async ({ input, ctx }) => {
     const userData = await clerkClient.users.getUser(ctx.userId)
     const email = userData.emailAddresses[0]?.emailAddress
