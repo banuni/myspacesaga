@@ -65,6 +65,7 @@ export const userRouter = createTRPCRouter({
       name: input.name,
       faction: input.faction,
       origin: input.origin,
+      rank: input.rank,
       balance: 0,
     })
     return {}

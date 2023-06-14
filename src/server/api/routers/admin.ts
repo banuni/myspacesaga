@@ -32,5 +32,17 @@ export const adminRouter = createTRPCRouter({
       await tx.update(users).set({ balance: sql`${users.balance} + ${amount}` }).where(eq(users.userId, userId));
       await tx.insert(transactions).values({ to: userId, amount, isLoad: true, trxId: createId() });
     })
+  }),
+  removFunds: privateProcedure.input(z.object({
+    amount: z.number().min(0),
+    userId: z.string(),
+  })).mutation(async ({ input: { amount, userId }, ctx }) => {
+    await db.transaction(async (tx) => {
+      const requestingUserId = ctx.userId;
+      // make sure userId is admin
+
+      await tx.update(users).set({ balance: sql`${users.balance} - ${amount}` }).where(eq(users.userId, userId));
+      await tx.insert(transactions).values({ to: userId, amount: -amount, isLoad: true, trxId: createId() });
+    })
   })
 });

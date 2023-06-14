@@ -9,6 +9,7 @@ import {
   NumberInputField,
   NumberInput,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
@@ -32,9 +33,21 @@ const Page = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-  const { mutate: sendLnx } = api.user.transferTo.useMutation();
+  const toast = useToast({ colorScheme: "pink" });
+  const { mutate: sendLnx } = api.user.transferTo.useMutation({
+    onSuccess: () => {
+      const { amount, walletId } = getValues();
+      toast({
+        title: "Success!",
+        description: `transferred ${amount} LNX to ${walletId}`,
+      });
+      reset({ walletId: '', amount: null!})
+    },
+  });
   const walletId = user?.user?.walletId;
   const balance = user?.user?.balance;
   const log = [

@@ -12,11 +12,9 @@ const Page = () => {
   if (!user) {
     return <SignIn />;
   }
-  console.log(userData);
   const factionColor = "gold";
-  const faction = "Totachim";
-  const rank = "Gibor";
-  const origin = "LarpGladiator";
+
+  const { faction, rank, origin, name } = userData?.user || {}
   return (
     <Box padding="20px" h="100%">
       <Flex direction="column" h="100%" justifyContent="space-between">
@@ -25,7 +23,7 @@ const Page = () => {
             <Avatar
               height="200px"
               width="200px"
-              src="https://blogscdn.thehut.net/app/uploads/sites/571/2020/09/Viking-beard-main_1630574627.jpg"
+              //src="https://blogscdn.thehut.net/app/uploads/sites/571/2020/09/Viking-beard-main_1630574627.jpg"
               ignoreFallback
             />
             <Text mt="20px" color="gray" fontWeight="400" fontSize="26px">
@@ -65,9 +63,9 @@ const Page = () => {
           >
             Logout
           </Text>
-          <Text variant="action" alignSelf="flex-end" onClick={() => update()}>
+          {/* <Text variant="action" alignSelf="flex-end" onClick={() => update()}>
             Edit Profile
-          </Text>
+          </Text> */}
         </Flex>
       </Flex>
     </Box>
