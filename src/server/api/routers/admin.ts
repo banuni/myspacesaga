@@ -15,6 +15,7 @@ export const adminRouter = createTRPCRouter({
     const res = await db.select().from(users).limit(30);
     return res;
   }),
+
   deleteUser: privateProcedure.input(z.object({
     internalId: z.number().int()
   })).mutation(async ({ input: { internalId } }) => {
@@ -24,7 +25,8 @@ export const adminRouter = createTRPCRouter({
   balconyTrx: privateProcedure.query(async () => {
     // need to make sure admin
     const trx = await db.select(
-      { from: users.name,
+      {
+        from: users.name,
         wallet: transactions.from,
         amount: transactions.amount
       }).from(transactions).leftJoin(users, eq(transactions.from, users.walletId))
@@ -42,6 +44,12 @@ export const adminRouter = createTRPCRouter({
       await tx.update(users).set({ balance: sql`${users.balance} + ${amount}` }).where(eq(users.userId, userId));
       await tx.insert(transactions).values({ from: 'system', to: walletId, amount, isLoad: true, trxId: createId() });
     })
+  }),
+  total: privateProcedure.query(async () => {
+    const zz = await db.select({ sum: sql<number>`sum(${transactions.amount})` })
+    .from(transactions)
+    .where(eq(transactions.to, 'BALCONY'))
+    return zz[0]?.sum
   }),
   removeFunds: privateProcedure.input(z.object({
     amount: z.number().min(0),
