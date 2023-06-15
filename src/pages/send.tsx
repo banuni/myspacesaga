@@ -30,6 +30,7 @@ type FormValues = {
 };
 const Page = () => {
   const { data: user } = api.user.get.useQuery();
+  const utils = api.useContext()
   const {
     register,
     handleSubmit,
@@ -37,7 +38,7 @@ const Page = () => {
     getValues,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-  const toast = useToast({ colorScheme: "pink" });
+  const toast = useToast({ colorScheme: "whiteAlpha" });
   const { mutate: sendLnx } = api.user.transferTo.useMutation({
     onSuccess: () => {
       const { amount, walletId } = getValues();
@@ -45,8 +46,10 @@ const Page = () => {
         title: "Success!",
         description: `transferred ${amount} LNX to ${walletId}`,
       });
-      reset({ walletId: '', amount: null!})
+      reset()
+      void utils.user.invalidate()
     },
+    onError: e => toast({title: 'Error', description: e.message})
   });
   const walletId = user?.user?.walletId;
   const balance = user?.user?.balance;
@@ -110,7 +113,6 @@ const Page = () => {
             <GridItem>
               <NumberInput>
                 <NumberInputField
-                  type="number"
                   {...register("amount", { valueAsNumber: true })}
                   {...inputStyles}
                 />

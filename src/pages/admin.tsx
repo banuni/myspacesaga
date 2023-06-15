@@ -24,6 +24,7 @@ function AdminPage() {
   const users = api.admin.users.useQuery();
   const utils = api.useContext();
   const { mutate: addFunds } = api.admin.addFunds.useMutation({ onSuccess: () => utils.admin.users.invalidate()});
+  const { mutate: removeFunds } = api.admin.removeFunds.useMutation({ onSuccess: () => utils.admin.users.invalidate()});
   const { mutate: deleteUser} = api.admin.deleteUser.useMutation({ onSuccess: () => utils.admin.users.invalidate()})
   type User = Exclude<typeof users.data, undefined>[number];
   const columnHelper = createColumnHelper<User>();
@@ -56,6 +57,7 @@ function AdminPage() {
           const internalId = info.row.original.id;
           const add5 = () => addFunds({ userId, amount: 5 });
           const add10 = () => addFunds({ userId, amount: 10 });
+          const remove5 = () => removeFunds({ userId, amount: 5})
           
           return (
             <Flex gap="5px">
@@ -64,6 +66,9 @@ function AdminPage() {
               </Button>
               <Button variant="primary" onClick={add10}>
                 Add 10
+              </Button>
+              <Button variant="primary" onClick={remove5}>
+                Reduce 5
               </Button>
               <Button onClick={() => deleteUser({ internalId })}>
                 Delete User

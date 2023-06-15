@@ -33,7 +33,7 @@ export const adminRouter = createTRPCRouter({
       await tx.insert(transactions).values({ to: userId, amount, isLoad: true, trxId: createId() });
     })
   }),
-  removFunds: privateProcedure.input(z.object({
+  removeFunds: privateProcedure.input(z.object({
     amount: z.number().min(0),
     userId: z.string(),
   })).mutation(async ({ input: { amount, userId }, ctx }) => {

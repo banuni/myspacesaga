@@ -75,7 +75,8 @@ export const userRouter = createTRPCRouter({
 async function getWalletId() {
   let tries = 10;
   while (tries > 0) {
-    const code = `${faker.hacker.ingverb()}-${faker.color.human()}-${faker.animal.type()}`.toLowerCase()
+    // const code = `${faker.hacker.ingverb()}-${faker.color.human()}-${faker.animal.type()}`.toLowerCase()
+    const code = faker.number.int({ min: 10000, max: 99999 }).toString()
     const res = await db.select().from(users).where(eq(users.walletId, code))
     if (res.length === 0) {
       return code;
