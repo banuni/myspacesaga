@@ -31,7 +31,7 @@ const Page = () => {
             Bar Menu
           </Text>
           <Text variant="title" textAlign="center" color="gold" fontSize="20px">
-            Click to buy
+          Wallet ID: BALCONY
           </Text>
         </Box>
       </Flex>

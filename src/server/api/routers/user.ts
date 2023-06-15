@@ -34,19 +34,24 @@ export const userRouter = createTRPCRouter({
     target: z.string().min(1, 'target wallet required'),
     amount: z.number().min(1, 'must transfer a positive, whole number'),
   })).mutation(async ({ input: { amount, target }, ctx: { userId } }) => {
+
     await db.transaction(async (tx) => {
+      const isBalcony = target === 'BALCONY'
+      const srcWallet = (await tx.select({ wallatId: users.walletId }).from(users).where(eq(users.userId, userId)))[0]?.wallatId
       const targetValidQ = await tx.select({ count: sql<string>`count(*)` }).from(users).where(eq(users.walletId, target))
       const targetValid = targetValidQ[0]?.count === '1'
-      if (!targetValid) {
+      if (!isBalcony && !targetValid) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'No such wallet' })
       }
-      const haveFunds = await tx.select({ haveFunds: sql<boolean>`${users.balance} >= ${amount} ` }).from(users).where(eq(users.userId, userId))
-      if (!haveFunds[0]?.haveFunds) {
+      const haveFunds = await tx.select({ haveFunds: sql<string>`${users.balance} >= ${amount} `, balance: users.balance }).from(users).where(eq(users.userId, userId))
+      if (haveFunds[0]?.haveFunds === '0') {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not enough funds' })
       }
       await tx.update(users).set({ 'balance': sql`${users.balance} - ${amount}` }).where(eq(users.userId, userId))
-      await tx.update(users).set({ 'balance': sql`${users.balance} + ${amount}` }).where(eq(users.walletId, target))
-      await tx.insert(transactions).values({ from: userId, to: target, amount, isLoad: false, trxId: createId() })
+      if (!isBalcony) {
+        await tx.update(users).set({ 'balance': sql`${users.balance} + ${amount}` }).where(eq(users.walletId, target))
+      }
+      await tx.insert(transactions).values({ from: srcWallet, to: target, amount, isLoad: false, trxId: createId() })
     })
   }),
   create: privateProcedure.input(z.object({
