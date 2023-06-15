@@ -92,7 +92,7 @@ const Layout = ({ children }: PropsWithChildren) => {
               href="/admin-balcony"
               variant={route === "/admin-balcony" ? "active" : undefined}
             >
-              Admin
+              Admin Balcony
             </Button>
           )}
           {isCreating && (
