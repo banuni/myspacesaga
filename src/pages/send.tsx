@@ -30,6 +30,7 @@ type FormValues = {
 };
 const Page = () => {
   const { data: user } = api.user.get.useQuery();
+  const { data: trx } = api.user.transactions.useQuery();
   const utils = api.useContext()
   const {
     register,
@@ -53,15 +54,13 @@ const Page = () => {
   });
   const walletId = user?.user?.walletId;
   const balance = user?.user?.balance;
-  const log = [
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-    "Sent 100 to Wallet ID 4444333 at 04:04:04",
-  ];
+  const log = trx && trx?.map(t => {
+    if (t.from === walletId) {
+      return `Sent ${t.amount} LNX to ${t.to || '?'}`;
+    }
+    return `Got ${t.amount} LNX from ${t.from || '???'}`;
+  })
+
   const onSubmit = (v: FormValues) => {
     const { walletId, amount } = v;
     sendLnx({ target: walletId, amount });
@@ -125,7 +124,7 @@ const Page = () => {
         LNX Log
       </Text>
       <Box backgroundColor="black" flexGrow={1} overflow="auto" p="5px">
-        {log.map((t, i) => (
+        {!log ? 'loading' : log.map((t, i) => (
           <Text variant="secondary" fontSize="14px" key={i} p="2px">
             {`> ${t}`}
           </Text>

@@ -30,7 +30,12 @@ const selectStyle: ChakraStylesConfig = {
     backgroundColor: "rgba(0,0,0,0.5)",
   }),
 };
-
+const FACTION_OPTIONS = [
+  "None",
+  "Human Fleet",
+  "The Patriotic Front",
+  "Celestial Conglomerate",
+].map((v) => ({ value: v, label: v }));
 const RANK_OPTIONS = [
   "None",
   "Private",
@@ -108,17 +113,19 @@ export default function CreationPage() {
                 <Select
                 chakraStyles={selectStyle}
                 {...field}
-                options={[
-                  { value: "Human Fleet", label: "Human Fleet" },
-                  {
-                    value: "The Patriotic Front",
-                    label: "The Patriotic Front",
-                  },
-                  {
-                    value: "Celestial Conglomerate",
-                    label: "Celestial Conglomerate",
-                  },
-                ]}
+                options={FACTION_OPTIONS}
+                //   [
+                //   { value: "Human Fleet", label: "Human Fleet" },
+                //   { value: "Human Fleet", label: "Human Fleet" },
+                //   {
+                //     value: "The Patriotic Front",
+                //     label: "The Patriotic Front",
+                //   },
+                //   {
+                //     value: "Celestial Conglomerate",
+                //     label: "Celestial Conglomerate",
+                //   },
+                // ]}
                 />
                 );
               }}

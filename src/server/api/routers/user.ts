@@ -5,7 +5,7 @@ import {
 } from "~/server/api/trpc";
 import { db } from "~/db";
 import { transactions, users } from "~/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, or } from "drizzle-orm";
 import { clerkClient } from "@clerk/nextjs";
 import { faker } from '@faker-js/faker';
 import { createId } from '@paralleldrive/cuid2';
@@ -53,6 +53,12 @@ export const userRouter = createTRPCRouter({
       }
       await tx.insert(transactions).values({ from: srcWallet, to: target, amount, isLoad: false, trxId: createId() })
     })
+  }),
+  transactions: privateProcedure.query(async ({ ctx }) => {
+    const userWallet = (await db.select().from(users).where(eq(users.userId, ctx.userId)))[0]?.walletId || '';
+    const trx = await db.select().from(transactions).where(
+      or(eq(transactions.from, userWallet), eq(transactions.to, userWallet)))
+    return trx;
   }),
   create: privateProcedure.input(z.object({
     name: z.string().min(1, 'Need a name...'),

@@ -86,6 +86,15 @@ const Layout = ({ children }: PropsWithChildren) => {
               Admin
             </Button>
           )}
+          {isAdmin && (
+            <Button
+              as={NextLink}
+              href="/admin-balcony"
+              variant={route === "/admin-balcony" ? "active" : undefined}
+            >
+              Admin
+            </Button>
+          )}
           {isCreating && (
             <Button variant={route === "/create" ? "active" : undefined}>
               Create
