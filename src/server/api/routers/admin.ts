@@ -12,7 +12,7 @@ export const adminRouter = createTRPCRouter({
   users: privateProcedure.query(async ({ ctx }) => {
     const userId = ctx.userId;
     // make sure userId is admin
-    const res = await db.select().from(users).limit(30);
+    const res = await db.select().from(users);
     return res;
   }),
 
