@@ -4,13 +4,14 @@ import { int, mysqlTable, serial, varchar, boolean } from 'drizzle-orm/mysql-cor
 export const users = mysqlTable('user', {
   id: serial('id').primaryKey(),
   userId: varchar('userId', { length: 256 }).notNull(),
-  walletId: varchar('walletId', {length: 256}).notNull(),
+  walletId: varchar('walletId', { length: 256 }).notNull(),
   name: varchar('name', { length: 256 }),
   email: varchar('email', { length: 256 }),
   faction: varchar('faction', { length: 256 }),
   origin: varchar('origin', { length: 256 }),
   rank: varchar('rank', { length: 256 }),
-  balance: int('balance').default(0)
+  balance: int('balance').default(0),
+  profileImageUrl: varchar('profileImageUrl', { length: 256 }),
 });
 
 export const transactions = mysqlTable('trx', {

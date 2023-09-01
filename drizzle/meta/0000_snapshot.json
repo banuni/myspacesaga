@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "2d8d9361-097f-45ad-b7f1-c408285397f0",
+  "id": "f41ec0de-f918-4df6-9a35-582bf7b51de4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "trx": {
@@ -18,7 +18,7 @@
           "name": "trxId",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "amount": {
@@ -76,7 +76,14 @@
           "name": "userId",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "walletId": {
+          "name": "walletId",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -88,6 +95,27 @@
         },
         "email": {
           "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "faction": {
+          "name": "faction",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "origin": {
+          "name": "origin",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rank": {
+          "name": "rank",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false,

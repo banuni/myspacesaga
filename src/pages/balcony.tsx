@@ -5,15 +5,16 @@ import balconyLogo from "./balcony.png";
 const barItems: [string, number][] = [
   ["Simple Drink", 10],
   ["Space Beer", 15],
-  ["Moon Cocktail", 20],
-  ["Mars Cocktail", 20],
-  ["Earth Cocktail", 20],
+  // ["Moon Cocktail", 20],
+  // ["Mars Cocktail", 20],
+  // ["Earth Cocktail", 20],
+  ["Cocktail", 20],
   ["Lunasa Prison Shot", 15],
 ];
 
 const foodItems: [string, number][] = [
   ["Galactic Pizza (1/4)", 10],
-  ["Galactic Pizz", 30],
+  ["Galactic Pizza", 30],
 ];
 
 const Page = () => {
