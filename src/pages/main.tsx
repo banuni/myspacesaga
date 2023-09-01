@@ -1,10 +1,14 @@
 import { Avatar, Box, Center, Flex, Grid, Text } from "@chakra-ui/react";
 import { SignIn, useAuth, useUser } from "@clerk/nextjs";
+import { UploadButton } from "~/utils/uploadthing";
 import { useState } from "react";
+import "@uploadthing/react/styles.css";
+
 import { api } from "~/utils/api";
 
 const Page = () => {
   const [showOrigin, setShowOrigin] = useState(false);
+  const utils = api.useContext();
   const user = useUser();
   const { signOut } = useAuth();
   const { data: userData } = api.user.get.useQuery();
@@ -12,9 +16,10 @@ const Page = () => {
   if (!user) {
     return <SignIn />;
   }
+
   const factionColor = "gold";
 
-  const { faction, rank, origin, name } = userData?.user || {}
+  const { faction, rank, origin, name } = userData?.user || {};
   return (
     <Box padding="20px" h="100%">
       <Flex direction="column" h="100%" justifyContent="space-between">
@@ -23,7 +28,7 @@ const Page = () => {
             <Avatar
               height="200px"
               width="200px"
-              //src="https://blogscdn.thehut.net/app/uploads/sites/571/2020/09/Viking-beard-main_1630574627.jpg"
+              src={userData?.user?.profileImageUrl || undefined}
               ignoreFallback
             />
             <Text mt="20px" color="gray" fontWeight="400" fontSize="26px">
@@ -55,7 +60,7 @@ const Page = () => {
           <Text align="end">Rank:</Text>
           <Text variant="secondary">{rank}</Text>
         </Grid>
-        <Flex flexGrow={1} gap="10px" justify="space-between">
+        <Flex flexGrow={1} gap="10px" justify="space-between" align="center">
           <Text
             variant="action"
             alignSelf="flex-end"
@@ -63,9 +68,44 @@ const Page = () => {
           >
             Logout
           </Text>
-          {/* <Text variant="action" alignSelf="flex-end" onClick={() => update()}>
-            Edit Profile
-          </Text> */}
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              utils.user.get.setData(
+                (() => {
+                  return;
+                })(),
+                (prev) => {
+                  if (!prev) return prev;
+                  if (!prev.user) return prev;
+                  console.log("updating!");
+                  return {
+                    ...prev,
+                    user: {
+                      ...prev.user,
+                      profileImageUrl: res?.at(0)?.url || "",
+                    },
+                  };
+                }
+              );
+              void utils.user.invalidate();
+            }}
+            appearance={{
+              button({ isUploading }) {
+                return {
+                  backgroundColor: isUploading ? "#e9e9e9" : "#A31831",
+                };
+              },
+              allowedContent: () => ({
+                display: "none",
+              }),
+            }}
+            content={{
+              button({ isUploading }) {
+                return isUploading ? undefined : "Choose Image";
+              },
+            }}
+          />
         </Flex>
       </Flex>
     </Box>
