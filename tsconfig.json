@@ -21,13 +21,19 @@
       "~/*": ["./src/*"]
     }
   },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
-, "drizzle.config.ts"  ],
+    "**/*.mjs",
+    "drizzle.config.ts"
+  ],
   "exclude": ["node_modules"]
 }
