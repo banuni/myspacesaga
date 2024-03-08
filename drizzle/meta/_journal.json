@@ -1,20 +1,13 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1693525985451,
-      "tag": "0000_unique_sharon_ventura",
-      "breakpoints": false
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1693526022000,
-      "tag": "0001_woozy_gertrude_yorkes",
-      "breakpoints": false
+      "when": 1709851134315,
+      "tag": "0000_lean_prism",
+      "breakpoints": true
     }
   ]
 }
