@@ -8,6 +8,8 @@ import {
   chakra,
   Text,
   Box,
+  Flex,
+  Spinner,
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
@@ -18,15 +20,30 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import { api } from "~/utils/api";
+import { Input } from "~/components/Input";
+import { useMemo, useState } from "react";
 
 function AdminPage() {
+  const [filterValue, setFilterValue] = useState<string>("");
   const { data: trx } = api.admin.balconyTrx.useQuery();
   const { data: total } = api.admin.total.useQuery();
   type Trx = Exclude<typeof trx, undefined>;
   const columnHelper = createColumnHelper<Trx[number]>();
+  const filteredData = useMemo(
+    () =>
+      filterValue
+        ? trx?.filter(
+            (t) =>
+              t.fromPlayerName?.includes(filterValue) ||
+              t.fromChar?.includes(filterValue)
+          )
+        : trx,
+    [trx, filterValue]
+  );
+
   const table = useReactTable({
     getCoreRowModel: getCoreRowModel(),
-    data: trx || [],
+    data: filteredData || [],
     columns: [
       columnHelper.accessor("fromPlayerName", {
         header: "From",
@@ -64,7 +81,21 @@ function AdminPage() {
 
   return (
     <Box>
-      <Text>Total {!!total && total} LNX</Text>
+      <Flex justify="space-between" alignItems="center" mr="20px">
+        <Box w="300px" p="4px" mt="10px">
+          <Input
+            placeholder="Search player or character..."
+            value={filterValue}
+            onChange={(e) => setFilterValue(e.target.value)}
+          />
+        </Box>
+        {total ? (
+          <Text>Total {total} LNX</Text>
+        ) : (
+          <Spinner size="md" color="white" />
+        )}
+      </Flex>
+
       <Table>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
