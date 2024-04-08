@@ -7,8 +7,6 @@ import {
   Tr,
   chakra,
   Text,
-  Button,
-  Flex,
   Box,
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
@@ -30,24 +28,43 @@ function AdminPage() {
     getCoreRowModel: getCoreRowModel(),
     data: trx || [],
     columns: [
-      columnHelper.accessor((row) => row.from, {
-        id: "from",
-        cell: (info) => <span>{info.getValue()}</span>,
+      columnHelper.accessor("fromPlayerName", {
+        header: "From",
+        cell: (info) => (
+          <span>
+            {info.getValue()}
+            <Text pt="4px" fontSize="14px">
+              {info.row.original.fromChar}
+            </Text>
+          </span>
+        ),
       }),
-      columnHelper.accessor((row) => row.amount, {
-        id: "amount",
+
+      columnHelper.accessor("amount", {
         cell: (info) => <span>{info.getValue()} LNX</span>,
       }),
-      columnHelper.accessor((row) => row.wallet, {
-        id: "wallet",
+      columnHelper.accessor("wallet", {
         cell: (info) => <span>{info.getValue()}</span>,
+      }),
+      columnHelper.accessor("timex", {
+        cell: (info) => {
+          const value = info.row.original.timex;
+          return <span>{value?.toLocaleTimeString("he-il")}</span>;
+        },
+      }),
+      columnHelper.display({
+        id: "date",
+        cell: (info) => {
+          const value = info.row.original.timex;
+          return <span>{value?.toLocaleDateString("he-il")}</span>;
+        },
       }),
     ],
   });
 
   return (
     <Box>
-        <Text>Total {!!total && total} LNX</Text>
+      <Text>Total {!!total && total} LNX</Text>
       <Table>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -5,14 +5,12 @@ import balconyLogo from "./balcony.png";
 const barItems: [string, number][] = [
   ["Simple Drink", 10],
   ["Space Beer", 15],
-  // ["Moon Cocktail", 20],
-  // ["Mars Cocktail", 20],
-  // ["Earth Cocktail", 20],
   ["Cocktail", 20],
   ["Lunasa Prison Shot", 15],
 ];
 
 const foodItems: [string, number][] = [
+  ["Milky-Way Ice Cream", 10],
   ["Galactic Pizza (1/4)", 10],
   ["Galactic Pizza", 30],
 ];
@@ -32,7 +30,7 @@ const Page = () => {
             Bar Menu
           </Text>
           <Text variant="title" textAlign="center" color="gold" fontSize="20px">
-          Wallet ID: BALCONY
+            Wallet ID: BALCONY / balcony / BalCoNy
           </Text>
         </Box>
       </Flex>
