@@ -15,6 +15,10 @@ const foodItems: [string, number][] = [
   ["Galactic Pizza", 30],
 ];
 
+const special: [string, number][] = [
+  ["Book: Peace and Prosperity among the Stars", 40],
+];
+
 const Page = () => {
   return (
     <Box backgroundColor="rgba(41, 38, 110, 0.75)" h="100%">
@@ -35,27 +39,20 @@ const Page = () => {
         </Box>
       </Flex>
       <Box p="20px" lineHeight="36px">
-        {barItems.map(([name, price]) => {
+        {[barItems, foodItems, special].map((items, idx) => {
           return (
-            <Flex key={name} justify="space-between">
-              <Text variant="menuItem" key={name}>
-                {name}
-              </Text>
-              <Text variant="menuItem" color="#71f1ff">
-                {price} LNX
-              </Text>
-            </Flex>
-          );
-        })}
-        <Box h="30px" />
-        {foodItems.map(([name, price]) => {
-          return (
-            <Flex key={name} justify="space-between">
-              <Text variant="menuItem">{name}</Text>
-              <Text variant="menuItem" color="#71f1ff">
-                {price} LNX
-              </Text>
-            </Flex>
+            <Box mb="20px" key={idx}>
+              {items.map(([name, price]) => {
+                return (
+                  <Flex key={name} justify="space-between">
+                    <Text variant="menuItem">{name}</Text>
+                    <Text variant="menuItem" color="#71f1ff">
+                      {price} LNX
+                    </Text>
+                  </Flex>
+                );
+              })}
+            </Box>
           );
         })}
       </Box>
