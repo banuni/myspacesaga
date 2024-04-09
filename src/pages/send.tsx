@@ -3,26 +3,15 @@ import {
   Center,
   Flex,
   Grid,
-  Input,
   Text,
   GridItem,
-  NumberInputField,
   NumberInput,
   Button,
   useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { Input, NumberInputField } from "~/components/Input";
 import { api } from "~/utils/api";
-
-const inputStyles = {
-  borderColor: "red",
-  borderRadius: "15px",
-  borderWidth: "2px",
-  color: "white",
-  _focus: {
-    borderColor: "white",
-  },
-};
 
 type FormValues = {
   amount: number;
@@ -31,7 +20,7 @@ type FormValues = {
 const Page = () => {
   const { data: user } = api.user.get.useQuery();
   const { data: trx } = api.user.transactions.useQuery();
-  const utils = api.useContext()
+  const utils = api.useContext();
   const {
     register,
     handleSubmit,
@@ -47,19 +36,21 @@ const Page = () => {
         title: "Success!",
         description: `transferred ${amount} LNX to ${walletId}`,
       });
-      reset()
-      void utils.user.invalidate()
+      reset();
+      void utils.user.invalidate();
     },
-    onError: e => toast({title: 'Error', description: e.message})
+    onError: (e) => toast({ title: "Error", description: e.message }),
   });
   const walletId = user?.user?.walletId;
   const balance = user?.user?.balance;
-  const log = trx && trx?.map(t => {
-    if (t.from === walletId) {
-      return `Sent ${t.amount} LNX to ${t.to || '?'}`;
-    }
-    return `Got ${t.amount} LNX from ${t.from || '???'}`;
-  })
+  const log =
+    trx &&
+    trx?.map((t) => {
+      if (t.from === walletId) {
+        return `Sent ${t.amount} LNX to ${t.to || "?"}`;
+      }
+      return `Got ${t.amount} LNX from ${t.from || "???"}`;
+    });
 
   const onSubmit = (v: FormValues) => {
     const { walletId, amount } = v;
@@ -91,7 +82,7 @@ const Page = () => {
               <Text>Wallet ID</Text>
             </GridItem>
             <GridItem>
-              <Input {...inputStyles} {...register("walletId")} />
+              <Input {...register("walletId")} />
             </GridItem>
             <GridItem rowSpan={2}>
               <Box h="100%">
@@ -113,7 +104,6 @@ const Page = () => {
               <NumberInput>
                 <NumberInputField
                   {...register("amount", { valueAsNumber: true })}
-                  {...inputStyles}
                 />
               </NumberInput>
             </GridItem>
@@ -124,11 +114,13 @@ const Page = () => {
         LNX Log
       </Text>
       <Box backgroundColor="black" flexGrow={1} overflow="auto" p="5px">
-        {!log ? 'loading' : log.map((t, i) => (
-          <Text variant="secondary" fontSize="14px" key={i} p="2px">
-            {`> ${t}`}
-          </Text>
-        ))}
+        {!log
+          ? "loading"
+          : log.map((t, i) => (
+              <Text variant="secondary" fontSize="14px" key={i} p="2px">
+                {`> ${t}`}
+              </Text>
+            ))}
       </Box>
     </Flex>
   );

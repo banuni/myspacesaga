@@ -1,0 +1,1 @@
+ALTER TABLE "trx" ADD COLUMN "createdAt" timestamp with time zone DEFAULT now();

@@ -1,13 +1,14 @@
 import {
   integer,
   pgTable,
-  serial,
   varchar,
   boolean,
+  timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("user", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   userId: varchar("userId", { length: 256 }).notNull(),
   walletId: varchar("walletId", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }),
@@ -20,11 +21,12 @@ export const users = pgTable("user", {
 });
 
 export const transactions = pgTable("trx", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   trxId: varchar("trxId", { length: 256 }).notNull(),
   amount: integer("amount").notNull(),
   from: varchar("from", { length: 256 }), // from user
   to: varchar("to", { length: 256 }), // to user
   item: varchar("item", { length: 256 }),
   isLoad: boolean("isLoad").default(false),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow()
 });

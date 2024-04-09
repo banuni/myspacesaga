@@ -53,6 +53,7 @@
     "drizzle-kit": "^0.20.14",
     "eslint": "^8.40.0",
     "eslint-config-next": "^13.4.2",
+    "pg": "^8.11.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   },
