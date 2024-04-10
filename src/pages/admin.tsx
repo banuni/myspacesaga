@@ -26,7 +26,7 @@ import { useMemo, useState } from "react";
 function AdminPage() {
   const users = api.admin.users.useQuery();
   const utils = api.useContext();
-  const [filterValue, setFilterValue] = useState<string>("");
+  const [filterValue, setFilterValue] = useState("");
   const { mutate: addFunds } = api.admin.addFunds.useMutation({
     onSuccess: () => utils.admin.users.invalidate(),
   });

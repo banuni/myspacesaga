@@ -46,6 +46,9 @@ const Page = () => {
   const log =
     trx &&
     trx?.map((t) => {
+      if (t.item) {
+        return `Bought ${t.item} for ${t.amount} LNX`;
+      }
       if (t.from === walletId) {
         return `Sent ${t.amount} LNX to ${t.to || "?"}`;
       }
@@ -58,7 +61,7 @@ const Page = () => {
   };
   return (
     <Flex h="100%" direction="column">
-      <Box p="20px">
+      <Box p="20px" flexGrow={1}>
         <Flex gap="10px">
           <Text variant="primary">Wallet ID:</Text>
           <Text variant="secondary">{walletId}</Text>
@@ -110,18 +113,20 @@ const Page = () => {
           </Grid>
         </form>
       </Box>
-      <Text mt="20px" ml="20px" mb="5px">
-        LNX Log
-      </Text>
-      <Box backgroundColor="black" flexGrow={1} overflow="auto" p="5px">
-        {!log
-          ? "loading"
-          : log.map((t, i) => (
-              <Text variant="secondary" fontSize="14px" key={i} p="2px">
-                {`> ${t}`}
-              </Text>
-            ))}
-      </Box>
+      <Flex direction="column" maxH="40%">
+        <Text mt="20px" ml="20px" mb="5px">
+          LNX Log
+        </Text>
+        <Box backgroundColor="black" overflow="auto" p="5px">
+          {!log
+            ? "loading"
+            : log.map((t, i) => (
+                <Text variant="secondary" fontSize="14px" key={i} p="2px">
+                  {`> ${t}`}
+                </Text>
+              ))}
+        </Box>
+      </Flex>
     </Flex>
   );
 };

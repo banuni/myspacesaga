@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { Box, Button, Flex, Text, Link } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
 import novaLogo from "./nova_log.png";
@@ -8,6 +8,16 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
 const ADMIN_EMAILS = ["banuni@gmail.com", "yoav.buddy@gmail.com"];
+
+const links = [
+  { href: "/main", label: "Main" },
+  { href: "/send", label: "Send LNX" },
+  { href: "/balcony", label: "Star Balcony" },
+  { href: "/admin", label: "Admin", isAdmin: true },
+  { href: "/admin-balcony", label: "Admin Balcony", isAdmin: true },
+  { href: "/topups", label: "Top Up History", isAdmin: true },
+  { href: "/create", label: "Create", isCreating: true },
+];
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { route, push } = useRouter();
@@ -31,8 +41,8 @@ const Layout = ({ children }: PropsWithChildren) => {
       <Box
         className=""
         background="radial-gradient(circle, rgba(60,59,64,1) 0%,  rgba(24,47,41,1) 11%, rgba(0,4,28,1) 100%)"
-        w="100%"
-        h="100%"
+        w="100svw"
+        h="100svh"
       >
         <Flex
           justifyContent="space-evenly"
@@ -53,55 +63,36 @@ const Layout = ({ children }: PropsWithChildren) => {
           p="5px"
           alignItems="center"
         >
-          <Button
-            as={isCreating ? undefined : NextLink}
-            href="/main"
-            variant={route === "/main" ? "active" : undefined}
-            isDisabled={isCreating}
-          >
-            Main
-          </Button>
-          <Button
-            as={isCreating ? undefined : NextLink}
-            href="/send"
-            variant={route === "/send" ? "active" : undefined}
-            isDisabled={isCreating}
-          >
-            Send LNX
-          </Button>
-          <Button
-            as={isCreating ? undefined : NextLink}
-            href="/balcony"
-            variant={route === "/balcony" ? "active" : undefined}
-            isDisabled={isCreating}
-          >
-            Star Balcony
-          </Button>
-          {isAdmin && (
-            <Button
-              as={NextLink}
-              href="/admin"
-              variant={route === "/admin" ? "active" : undefined}
-            >
-              Admin
-            </Button>
-          )}
-          {isAdmin && (
-            <Button
-              as={NextLink}
-              href="/admin-balcony"
-              variant={route === "/admin-balcony" ? "active" : undefined}
-            >
-              Admin Balcony
-            </Button>
-          )}
-          {isCreating && (
-            <Button variant={route === "/create" ? "active" : undefined}>
-              Create
-            </Button>
+          {links.map(
+            ({
+              href,
+              label,
+              isAdmin: linkIsAdmin,
+              isCreating: linkIsCreating,
+            }) => {
+              if (
+                (linkIsAdmin && !isAdmin) ||
+                (linkIsCreating && !isCreating)
+              ) {
+                return null;
+              }
+              return (
+                <Button
+                  key={href}
+                  as={isCreating ? undefined : NextLink}
+                  href={href}
+                  variant={route === href ? "active" : undefined}
+                  isDisabled={isCreating}
+                >
+                  {label}
+                </Button>
+              );
+            }
           )}
         </Flex>
-        <Box h="calc(100% - 235px)">{children}</Box>
+        <Box h="calc(100svh - 235px)" overflowY="auto" overflowX="auto">
+          {children}
+        </Box>
       </Box>
     </>
   );

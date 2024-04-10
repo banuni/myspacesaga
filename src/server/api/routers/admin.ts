@@ -30,7 +30,7 @@ export const adminRouter = createTRPCRouter({
     const userId = ctx.userId;
     // make sure userId is admin
     const [dbUsers, clerkUsers] = await Promise.all([
-      db.select().from(users),
+      db.select().from(users).orderBy(users.name),
       clerkClient.users.getUserList({ limit: 300 }),
     ]);
     const withNames = dbUsers.map((u) => ({
@@ -59,6 +59,7 @@ export const adminRouter = createTRPCRouter({
         wallet: transactions.from,
         amount: transactions.amount,
         timex: transactions.createdAt,
+        item: transactions.item,
       })
       .from(transactions)
       .leftJoin(users, eq(transactions.from, users.walletId))
@@ -68,6 +69,33 @@ export const adminRouter = createTRPCRouter({
     const withNames = trx.map((t) => ({
       ...t,
       fromPlayerName: getPlayerFullName(t.fromUserId || "", clerkUsers),
+    }));
+    return withNames;
+  }),
+  topUps: privateProcedure.query(async () => {
+    // need to make sure admin
+    const trxPromise = db
+      .select({
+        id: transactions.id,
+        toChar: users.name,
+        toUserId: users.userId,
+        amount: transactions.amount,
+        timex: transactions.createdAt,
+      })
+      .from(transactions)
+      .leftJoin(users, eq(transactions.to, users.walletId))
+      .where(ilike(transactions.from, "system"))
+      .orderBy(desc(transactions.createdAt));
+    const clerkUsersPromise = await clerkClient.users.getUserList({
+      limit: 300,
+    });
+    const [trx, clerkUsers] = await Promise.all([
+      trxPromise,
+      clerkUsersPromise,
+    ]);
+    const withNames = trx.map((t) => ({
+      ...t,
+      toPlayerName: getPlayerFullName(t.toUserId || "", clerkUsers),
     }));
     return withNames;
   }),

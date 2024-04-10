@@ -20,7 +20,7 @@ const selectStyle: ChakraStylesConfig = {
   control: (e) => ({
     ...e,
     borderRadius: "15px",
-    borderColor: "red",
+    borderColor: "red.custom",
     color: "white",
   }),
   dropdownIndicator: (e) => ({ ...e, display: "none" }),

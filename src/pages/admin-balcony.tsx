@@ -57,6 +57,9 @@ function AdminPage() {
         ),
       }),
 
+      columnHelper.accessor("item", {
+        cell: (info) => <span>{info.getValue()}</span>,
+      }),
       columnHelper.accessor("amount", {
         cell: (info) => <span>{info.getValue()} LNX</span>,
       }),
@@ -64,16 +67,17 @@ function AdminPage() {
         cell: (info) => <span>{info.getValue()}</span>,
       }),
       columnHelper.accessor("timex", {
+        header: "Time",
         cell: (info) => {
           const value = info.row.original.timex;
-          return <span>{value?.toLocaleTimeString("he-il")}</span>;
-        },
-      }),
-      columnHelper.display({
-        id: "date",
-        cell: (info) => {
-          const value = info.row.original.timex;
-          return <span>{value?.toLocaleDateString("he-il")}</span>;
+          return (
+            <span>
+              {value?.toLocaleTimeString("he-il")}
+              <Text pt="4px" fontSize="14px">
+                {value?.toLocaleDateString("he-il")}
+              </Text>
+            </span>
+          );
         },
       }),
     ],
