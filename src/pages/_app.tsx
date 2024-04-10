@@ -11,7 +11,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider {...pageProps}>
       <ChakraProvider theme={theme}>
-        <main className={orbitron.className}>
+        <main className={orbitron.className} style={{ height: "100svh" }}>
           <Layout>
             <Component {...pageProps} />
           </Layout>

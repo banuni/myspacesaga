@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 export const inputStyles = {
-  borderColor: "red",
+  borderColor: "red.custom",
   borderRadius: "15px",
   borderWidth: "2px",
   color: "white",
