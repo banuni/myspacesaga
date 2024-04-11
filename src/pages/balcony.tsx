@@ -169,10 +169,10 @@ const Page = () => {
                     title: "Success!",
                     description: `${currentItem?.name || ""} bought!`,
                   });
-                  // doBuyItem({
-                  //   item: currentItem?.name,
-                  //   amount: currentItem?.price,
-                  // });
+                  doBuyItem({
+                    item: currentItem?.name,
+                    amount: currentItem?.price,
+                  });
                 }}
               >
                 Buy!
