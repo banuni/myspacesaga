@@ -163,16 +163,10 @@ const Page = () => {
                   if (!currentItem?.price) {
                     return;
                   }
-                  toast({
-                    variant: "left-accent",
-                    colorScheme: "toastGood",
-                    title: "Success!",
-                    description: `${currentItem?.name || ""} bought!`,
+                  doBuyItem({
+                    item: currentItem?.name,
+                    amount: currentItem?.price,
                   });
-                  // doBuyItem({
-                  //   item: currentItem?.name,
-                  //   amount: currentItem?.price,
-                  // });
                 }}
               >
                 Buy!
