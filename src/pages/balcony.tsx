@@ -23,7 +23,7 @@ import { api } from "~/utils/api";
 const barItems: [string, string, number][] = [
   ["Earthian's", "Drinks", 10],
   ["Patriotic Front's", "Beer", 15],
-  ["Barakalian", "Cocktail", 20],
+  ["Brakalian", "Cocktail", 20],
   ["Forgotten", "Arlenian MIX", 20],
   ["Corpo's", "Shot", 15],
 ];
