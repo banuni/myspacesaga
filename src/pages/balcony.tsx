@@ -10,27 +10,28 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import Image from "next/image";
-import balconyLogo from "./balcony.png";
+import Image, { type StaticImageData } from "next/image";
+import barBanner from "./bar-banner.gif";
+import tortillaImage from "./tortilla.png";
+import icecreamImage from "./ice-cream.png";
+import nachosImage from "./nachos.png";
+
 import { useRef, useState } from "react";
 import { orbitron } from "~/theme/font";
 import { api } from "~/utils/api";
 
-const barItems: [string, number][] = [
-  ["Simple Drink", 10],
-  ["Space Beer", 15],
-  ["Cocktail", 20],
-  ["Lunasa Prison Shot", 15],
+const barItems: [string, string, number][] = [
+  ["Earthian's", "Drinks", 10],
+  ["Patriotic Front's", "Beer", 15],
+  ["Barakalian", "Cocktail", 20],
+  ["Forgotten", "Arlenian MIX", 20],
+  ["Corpo's", "Shot", 15],
 ];
 
-const foodItems: [string, number][] = [
-  ["Milky-Way Ice Cream", 10],
-  ["Galactic Pizza (1/4)", 10],
-  ["Galactic Pizza", 30],
-];
-
-const special: [string, number][] = [
-  ["Book: Peace and Prosperity among the Stars", 40],
+const foodItems: [string, string, number, StaticImageData?][] = [
+  ["Falakorian", "Tortilla", 20, tortillaImage],
+  ["Pluto", "Ice Cream", 15, icecreamImage],
+  ["Maker's", "Nachos Bowl  ", 15, nachosImage],
 ];
 
 const Page = () => {
@@ -70,28 +71,17 @@ const Page = () => {
   };
 
   return (
-    <Box backgroundColor="rgba(41, 38, 110, 0.75)" pb="30px">
-      <Flex
-        justifyContent="space-evenly"
-        alignItems="center"
-        p="20px"
-        h="185px"
-      >
-        <Image src={balconyLogo} alt="" width="145" />
-        <Box>
-          <Text variant="title" textAlign="center" color="gold" fontSize="32px">
-            Bar Menu
-          </Text>
-          <Text variant="title" textAlign="center" color="gold" fontSize="20px">
-            Wallet ID: BALCONY
-          </Text>
-        </Box>
-      </Flex>
+    <Box backgroundColor="rgba(122, 0, 119, 0.49)" pb="30px">
+      <Box p="5">
+        <Image src={barBanner} alt="" />
+      </Box>
       <Box p="20px" lineHeight="36px">
-        {[barItems, foodItems, special].map((items, idx) => {
+        {[barItems, foodItems].map((items, idx) => {
+          const highlightColor =
+            idx === 0 ? "rgb(253, 53, 72)" : "rgb(254, 180, 0)";
           return (
             <Flex mb="20px" key={idx} flexDirection="column" gap="10px">
-              {items.map(([name, price]) => {
+              {items.map(([name, highlighted, price, imageSrc]) => {
                 return (
                   <Flex
                     key={name}
@@ -99,21 +89,39 @@ const Page = () => {
                     gap="10px"
                     alignItems="center"
                   >
-                    <Text variant="menuItem">{name}</Text>
+                    <Text variant="menuItem" flexGrow={1}>
+                      {name}&nbsp;
+                      <Text color={highlightColor} display="inline">
+                        {highlighted}
+                      </Text>
+                    </Text>
 
                     <Button
-                      variant="solid"
+                      // variant="solid"
+                      border="solid 2px rgb(21, 222, 233)"
+                      color="rgb(21, 222, 233)"
                       onClick={() => handleBuyClick(name, price)}
-                      minW="140px"
+                      minW="100px"
                     >
-                      Buy {price} LNX
+                      {price} LNX
                     </Button>
+                    {imageSrc && (
+                      <Image src={imageSrc} alt={name} width={50} height={50} />
+                    )}
                   </Flex>
                 );
               })}
             </Flex>
           );
         })}
+        <Flex justify="space-around">
+          <Button
+            as="a"
+            href="https://www.bitpay.co.il/app/me/F2E2ED19-B03B-65DE-7FD1-D2E55CB58CAA963D"
+          >
+            LOAD LNX
+          </Button>
+        </Flex>
         ...
       </Box>
       <AlertDialog
