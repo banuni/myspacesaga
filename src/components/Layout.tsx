@@ -6,6 +6,7 @@ import novaLogo from "./nova_log.png";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { LoadingScreen } from "./LoadingScreen";
 
 const ADMIN_EMAILS = ["banuni@gmail.com", "yoav.buddy@gmail.com"];
 
@@ -23,7 +24,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const { route, push } = useRouter();
   const { data: userData, isLoading } = api.user.get.useQuery();
   if (isLoading || !userData) {
-    return <>Loading...</>;
+    return <LoadingScreen />;
   }
   const isCreating = userData.isNew;
   if (route !== "/create" && isCreating) {
