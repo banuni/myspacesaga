@@ -42,8 +42,8 @@ function AdminPage() {
       filterValue
         ? users.data?.filter(
             (user) =>
-              user.name?.includes(filterValue) ||
-              user.playerName?.includes(filterValue)
+              user.name?.toLowerCase().includes(filterValue.toLowerCase()) ||
+              user.playerName?.toLowerCase().includes(filterValue.toLowerCase())
           )
         : users.data,
     [users.data, filterValue]

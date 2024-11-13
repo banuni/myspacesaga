@@ -14,6 +14,7 @@ import Image, { type StaticImageData } from "next/image";
 import barBanner from "./bar-banner.gif";
 import tortillaImage from "./tortilla.png";
 import icecreamImage from "./ice-cream.png";
+import waffleImage from "./waffle.png";
 import nachosImage from "./nachos.png";
 
 import { useRef, useState } from "react";
@@ -30,9 +31,16 @@ const barItems: [string, string, number][] = [
 
 const foodItems: [string, string, number, StaticImageData?][] = [
   ["Falakorian", "Tortilla", 20, tortillaImage],
-  ["Pluto", "Ice Cream", 15, icecreamImage],
-  // ["Segmented", "Waffle", 15],
+  // ["Pluto", "Ice Cream", 15, icecreamImage],
+  ["Segmented", "Waffle", 15, waffleImage],
   ["Maker's", "Nachos Bowl  ", 15, nachosImage],
+];
+
+const merchItems: [string, string, number][] = [
+  ["One Fleet Rank", "", 25],
+  ["Captain's Star", "", 35],
+  ["Book - Peace & Prosperity", "", 40],
+  ["Booklet - Fighting In The Shades (Only for Fleeters)", "", 20],
 ];
 
 const Page = () => {
@@ -77,42 +85,51 @@ const Page = () => {
         <Image src={barBanner} alt="" />
       </Box>
       <Box p="20px" lineHeight="36px">
-        {[barItems, foodItems].map((items, idx) => {
+        {[barItems, foodItems, merchItems].map((items, idx) => {
           const highlightColor =
             idx === 0 ? "rgb(253, 53, 72)" : "rgb(254, 180, 0)";
-          return (
-            <Flex mb="20px" key={idx} flexDirection="column" gap="10px">
-              {items.map(([name, highlighted, price, imageSrc]) => {
-                return (
-                  <Flex
-                    key={name}
-                    justify="space-between"
-                    gap="10px"
-                    alignItems="center"
-                  >
-                    <Text variant="menuItem" flexGrow={1}>
-                      {name}&nbsp;
-                      <Text color={highlightColor} display="inline">
-                        {highlighted}
-                      </Text>
-                    </Text>
 
-                    <Button
-                      // variant="solid"
-                      border="solid 2px rgb(21, 222, 233)"
-                      color="rgb(21, 222, 233)"
-                      onClick={() => handleBuyClick(name, price)}
-                      minW="100px"
+          return (
+            <>
+              <Flex mb="20px" key={idx} flexDirection="column" gap="10px">
+                {items.map(([name, highlighted, price, imageSrc]) => {
+                  return (
+                    <Flex
+                      key={name}
+                      justify="space-between"
+                      gap="10px"
+                      alignItems="center"
                     >
-                      {price} LNX
-                    </Button>
-                    {imageSrc && (
-                      <Image src={imageSrc} alt={name} width={50} height={50} />
-                    )}
-                  </Flex>
-                );
-              })}
-            </Flex>
+                      <Text variant="menuItem" flexGrow={1}>
+                        {name}&nbsp;
+                        <Text color={highlightColor} display="inline">
+                          {highlighted}
+                        </Text>
+                      </Text>
+
+                      <Button
+                        // variant="solid"
+                        border="solid 2px rgb(21, 222, 233)"
+                        color="rgb(21, 222, 233)"
+                        onClick={() => handleBuyClick(name, price)}
+                        minW="100px"
+                      >
+                        {price} LNX
+                      </Button>
+                      {imageSrc && (
+                        <Image
+                          src={imageSrc}
+                          alt={name}
+                          width={50}
+                          height={50}
+                        />
+                      )}
+                    </Flex>
+                  );
+                })}
+              </Flex>
+              <Box w="100%" h="20px" />
+            </>
           );
         })}
         <Flex justify="space-around">

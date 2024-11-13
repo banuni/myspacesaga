@@ -38,21 +38,21 @@ const FACTION_OPTIONS = [
 ].map((v) => ({ value: v, label: v }));
 const RANK_OPTIONS = [
   "None",
-  "Private",
-  "Corporal",
-  "Sergeant",
-  "Senior Sergeant",
-  "Sergeant Major",
-  "Second Lieutenant",
-  "First Lieutenant",
-  "Commander ",
-  "Major",
-  "Captain",
-  "Colonel",
-  "Major-General",
-  "Vice-Admiral",
-  "Admiral",
-  "Fleet Admiral",
+  "Private", //טוראי
+  "Corporal", // רבט
+  "Sergeant", //סמל
+  "Senior Sergeant", //סמר
+  "Sergeant Major", // רסל
+  "Second Lieutenant", // סגן משנה
+  "First Lieutenant", // סגן ראשון
+  "Captain", // סרן
+  "Major", // רב סרן
+  "Commander ", // קומנדר
+  "Colonel", // קולונל
+  "Major-General", // מייגור-ג׳נרל
+  "Vice-Admiral", // תת אדמירל
+  "Admiral", // אדמירל 
+  "Fleet Admiral", // אדמירל צי
 ].map((v) => ({ value: v, label: v }));
 
 interface Option extends OptionBase {
@@ -114,18 +114,6 @@ export default function CreationPage() {
                 chakraStyles={selectStyle}
                 {...field}
                 options={FACTION_OPTIONS}
-                //   [
-                //   { value: "Human Fleet", label: "Human Fleet" },
-                //   { value: "Human Fleet", label: "Human Fleet" },
-                //   {
-                //     value: "The Patriotic Front",
-                //     label: "The Patriotic Front",
-                //   },
-                //   {
-                //     value: "Celestial Conglomerate",
-                //     label: "Celestial Conglomerate",
-                //   },
-                // ]}
                 />
                 );
               }}

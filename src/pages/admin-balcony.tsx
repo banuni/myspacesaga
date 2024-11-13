@@ -34,8 +34,10 @@ function AdminPage() {
       filterValue
         ? trx?.filter(
             (t) =>
-              t.fromPlayerName?.includes(filterValue) ||
-              t.fromChar?.includes(filterValue)
+              t.fromPlayerName
+                ?.toLowerCase()
+                .includes(filterValue.toLowerCase()) ||
+              t.fromChar?.toLowerCase().includes(filterValue.toLowerCase())
           )
         : trx,
     [trx, filterValue]

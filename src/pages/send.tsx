@@ -18,7 +18,9 @@ type FormValues = {
   walletId: string;
 };
 const Page = () => {
-  const { data: user } = api.user.get.useQuery();
+  const { data: user } = api.user.get.useQuery(undefined, {
+    refetchInterval: 1000,
+  });
   const { data: trx } = api.user.transactions.useQuery();
   const utils = api.useContext();
   const {
