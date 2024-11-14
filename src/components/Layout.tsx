@@ -13,9 +13,9 @@ const ADMIN_EMAILS = ["banuni@gmail.com", "yoav.buddy@gmail.com"];
 const links = [
   { href: "/main", label: "Main" },
   { href: "/send", label: "Send LNX" },
-  { href: "/balcony", label: "Star Balcony" },
-  { href: "/admin", label: "Admin", isAdmin: true },
-  { href: "/admin-balcony", label: "Admin Balcony", isAdmin: true },
+  { href: "/shop", label: "Rusty Roulette" },
+  { href: "/admin", label: "Players", isAdmin: true },
+  { href: "/orders", label: "Orders", isAdmin: true },
   { href: "/topups", label: "Top Up History", isAdmin: true },
   { href: "/create", label: "Create", isCreating: true },
 ];

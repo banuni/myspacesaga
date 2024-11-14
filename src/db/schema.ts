@@ -28,5 +28,6 @@ export const transactions = pgTable("trx", {
   to: varchar("to", { length: 256 }), // to user
   item: varchar("item", { length: 256 }),
   isLoad: boolean("isLoad").default(false),
-  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow()
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow(),
+  doneAt: timestamp("doneAt", { withTimezone: true }),
 });

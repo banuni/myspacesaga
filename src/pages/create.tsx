@@ -51,14 +51,19 @@ const RANK_OPTIONS = [
   "Colonel", // קולונל
   "Major-General", // מייגור-ג׳נרל
   "Vice-Admiral", // תת אדמירל
-  "Admiral", // אדמירל 
+  "Admiral", // אדמירל
   "Fleet Admiral", // אדמירל צי
 ].map((v) => ({ value: v, label: v }));
 
 interface Option extends OptionBase {
   value: string;
 }
-type FormValues = { name: string; faction: Option; origin: Option, rank: Option };
+type FormValues = {
+  name: string;
+  faction: Option;
+  origin: Option;
+  rank: Option;
+};
 
 export default function CreationPage() {
   const {
@@ -68,7 +73,7 @@ export default function CreationPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
   const router = useRouter();
-  const utils = api.useContext();
+  const utils = api.useUtils();
   const { mutateAsync: createUser } = api.user.create.useMutation();
 
   async function onSubmit(values: FormValues) {
@@ -81,7 +86,7 @@ export default function CreationPage() {
     await utils.user.invalidate();
     await router.push("/main");
   }
-  
+
   return (
     <Box p="20px">
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
@@ -97,27 +102,26 @@ export default function CreationPage() {
             {...register("name", {
               required: "This is required",
             })}
-            />
+          />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="faction">
             <Text>Faction</Text>
           </FormLabel>
           <Controller
-            rules={{required: true}}
+            rules={{ required: true }}
             name="faction"
             control={control}
             render={({ field }) => {
-              
               return (
                 <Select
-                chakraStyles={selectStyle}
-                {...field}
-                options={FACTION_OPTIONS}
+                  chakraStyles={selectStyle}
+                  {...field}
+                  options={FACTION_OPTIONS}
                 />
-                );
-              }}
-              />
+              );
+            }}
+          />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="origin">
@@ -125,31 +129,31 @@ export default function CreationPage() {
           </FormLabel>
           <Controller
             name="origin"
-            rules={{required: true}}
+            rules={{ required: true }}
             control={control}
             render={({ field }) => {
               return (
                 <Select
-                chakraStyles={selectStyle}
-                {...field}
-                options={[
-                  { value: "Human", label: "Human" },
-                  { value: "Robot", label: "Robot" },
-                  {
-                    value: "H.MTX (Android GEN A)",
-                    label: "H.MTX (Android GEN A)",
-                  },
-                  {
-                    value: "H.Z (Android GEN B)",
-                    label: "H.Z (Android GEN B)",
-                  },
-                  { value: "NeoSapien", label: "NeoSapien" },
-                  { value: "XenoVita (Alien)", label: "XenoVita (Alien)" },
-                ]}
+                  chakraStyles={selectStyle}
+                  {...field}
+                  options={[
+                    { value: "Human", label: "Human" },
+                    { value: "Robot", label: "Robot" },
+                    {
+                      value: "H.MTX (Android GEN A)",
+                      label: "H.MTX (Android GEN A)",
+                    },
+                    {
+                      value: "H.Z (Android GEN B)",
+                      label: "H.Z (Android GEN B)",
+                    },
+                    { value: "NeoSapien", label: "NeoSapien" },
+                    { value: "XenoVita (Alien)", label: "XenoVita (Alien)" },
+                  ]}
                 />
-                );
-              }}
-              />
+              );
+            }}
+          />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="Rank">
@@ -157,7 +161,7 @@ export default function CreationPage() {
           </FormLabel>
           <Controller
             name="rank"
-            rules={{required: true}}
+            rules={{ required: true }}
             control={control}
             render={({ field }) => {
               return (

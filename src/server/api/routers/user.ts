@@ -4,7 +4,7 @@ import { db } from "~/db";
 import { transactions, users } from "~/db/schema";
 import { eq, sql, or, desc } from "drizzle-orm";
 import { clerkClient } from "@clerk/nextjs";
-import { fa, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { doesUserHaveFunds, getUserWallet } from "~/server/service";
@@ -163,7 +163,6 @@ export const userRouter = createTRPCRouter({
 async function getWalletId() {
   let tries = 10;
   while (tries > 0) {
-    // const code = `${faker.hacker.ingverb()}-${faker.color.human()}-${faker.animal.type()}`.toLowerCase()
     const code = faker.number.int({ min: 10000, max: 99999 }).toString();
     const res = await db.select().from(users).where(eq(users.walletId, code));
     if (res.length === 0) {

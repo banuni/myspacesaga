@@ -10,6 +10,9 @@ import {
   Box,
   Flex,
   Spinner,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
@@ -19,16 +22,110 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { api } from "~/utils/api";
+import { api, type RouterOutputs } from "~/utils/api";
 import { Input } from "~/components/Input";
 import { useMemo, useState } from "react";
 
-function AdminPage() {
+type Trx = RouterOutputs["admin"]["balconyTrx"][number];
+const columnHelper = createColumnHelper<Trx>();
+
+const useColumns = (markDone: (id: string) => void) => {
+  return [
+    columnHelper.accessor("doneAt", {
+      header: "",
+      cell: (info) => {
+        const value = info.getValue();
+        const fulfilled = !!value;
+        if (!fulfilled) {
+          return (
+            <Box
+              w="30px"
+              h="30px"
+              bgColor={"white"}
+              borderRadius="full"
+              onClick={() => markDone(info.row.original.trxId)}
+            />
+          );
+        }
+        return (
+          <Popover trigger="click">
+            <PopoverTrigger>
+              <Box
+                w="30px"
+                h="30px"
+                bgColor={fulfilled ? "grey" : "white"}
+                opacity={fulfilled ? 0.5 : 1}
+                borderRadius="full"
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <Box bgColor="black" color="white">
+                {value?.toISOString()}
+              </Box>
+            </PopoverContent>
+          </Popover>
+        );
+      },
+    }),
+    columnHelper.accessor("fromPlayerName", {
+      header: "From",
+      cell: (info) => (
+        <span>
+          {info.getValue()}
+          <Text pt="4px" fontSize="14px">
+            {info.row.original.fromChar}
+          </Text>
+        </span>
+      ),
+    }),
+    columnHelper.accessor("item", {
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
+    columnHelper.accessor("amount", {
+      cell: (info) => <span>{info.getValue()} LNX</span>,
+    }),
+    columnHelper.accessor("wallet", {
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
+    columnHelper.accessor("timex", {
+      header: "Time",
+      cell: (info) => {
+        const value = info.row.original.timex;
+        return (
+          <span>
+            {value?.toLocaleTimeString("he-il")}
+            <Text pt="4px" fontSize="14px">
+              {value?.toLocaleDateString("he-il")}
+            </Text>
+          </span>
+        );
+      },
+    }),
+  ];
+};
+
+function Orders() {
   const [filterValue, setFilterValue] = useState<string>("");
   const { data: trx } = api.admin.balconyTrx.useQuery();
   const { data: total } = api.admin.total.useQuery();
-  type Trx = Exclude<typeof trx, undefined>;
-  const columnHelper = createColumnHelper<Trx[number]>();
+  const utils = api.useContext();
+  const { mutate: markDoneMutation } = api.admin.setOrderDone.useMutation({
+    onMutate: (params) => {
+      utils.admin.balconyTrx.setData(undefined, (prev) =>
+        prev?.map((t) =>
+          t.trxId === params.trxId ? { ...t, doneAt: new Date() } : t
+        )
+      );
+    },
+    onSettled: () => {
+      void utils.admin.balconyTrx.invalidate();
+    },
+  });
+  const markDone = (id: string) => {
+    console.log("marking done", id);
+    markDoneMutation({ trxId: id });
+  };
+  const columns = useColumns(markDone);
   const filteredData = useMemo(
     () =>
       filterValue
@@ -46,43 +143,7 @@ function AdminPage() {
   const table = useReactTable({
     getCoreRowModel: getCoreRowModel(),
     data: filteredData || [],
-    columns: [
-      columnHelper.accessor("fromPlayerName", {
-        header: "From",
-        cell: (info) => (
-          <span>
-            {info.getValue()}
-            <Text pt="4px" fontSize="14px">
-              {info.row.original.fromChar}
-            </Text>
-          </span>
-        ),
-      }),
-
-      columnHelper.accessor("item", {
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("amount", {
-        cell: (info) => <span>{info.getValue()} LNX</span>,
-      }),
-      columnHelper.accessor("wallet", {
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("timex", {
-        header: "Time",
-        cell: (info) => {
-          const value = info.row.original.timex;
-          return (
-            <span>
-              {value?.toLocaleTimeString("he-il")}
-              <Text pt="4px" fontSize="14px">
-                {value?.toLocaleDateString("he-il")}
-              </Text>
-            </span>
-          );
-        },
-      }),
-    ],
+    columns,
   });
 
   return (
@@ -155,4 +216,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default Orders;

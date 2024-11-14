@@ -1,0 +1,1 @@
+ALTER TABLE "trx" ADD COLUMN "doneAt" timestamp with time zone;
