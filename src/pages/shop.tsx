@@ -25,22 +25,22 @@ const barItems: [string, string, number][] = [
   ["Earthian's", "Drinks", 10],
   ["Patriotic Front's", "Beer", 15],
   ["Brakalian", "Cocktail", 20],
-  ["Forgotten", "Arlenian MIX", 20],
-  ["Corpo's", "Shot", 15],
+  ["Forgotten", "Breezer", 20],
+  ["Corpo's", "Shot", 10],
 ];
 
 const foodItems: [string, string, number, StaticImageData?][] = [
-  ["Falakorian", "Tortilla", 20, tortillaImage],
+  // ["Falakorian", "Tortilla", 20, tortillaImage],
   // ["Pluto", "Ice Cream", 15, icecreamImage],
-  ["Segmented", "Waffle", 15, waffleImage],
-  ["Maker's", "Nachos Bowl  ", 15, nachosImage],
+  // ["Segmented", "Waffle", 15, waffleImage],
+  ["Maker's", "Munchies", 10, nachosImage],
 ];
 
 const merchItems: [string, string, number][] = [
-  ["One Fleet Rank", "", 25],
-  ["Captain's Star", "", 35],
-  ["Book - Peace & Prosperity", "", 40],
-  ["Booklet - Fighting In The Shades (Only for Fleeters)", "", 20],
+  // ["One Fleet Rank", "", 25],
+  // ["Captain's Star", "", 35],
+  // ["Book - Peace & Prosperity", "", 40],
+  // ["Booklet - Fighting In The Shades (Only for Fleeters)", "", 20],
 ];
 
 const Page = () => {
