@@ -13,7 +13,7 @@ const ADMIN_EMAILS = ["banuni@gmail.com", "yoav.buddy@gmail.com"];
 const links = [
   { href: "/main", label: "Main" },
   { href: "/send", label: "Send LNX" },
-  { href: "/shop", label: "Rusty Roulette" },
+  { href: "/shop", label: "Shop" },
   { href: "/admin", label: "Players", isAdmin: true },
   { href: "/orders", label: "Orders", isAdmin: true },
   { href: "/topups", label: "Top Up History", isAdmin: true },
