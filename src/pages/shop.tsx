@@ -135,7 +135,7 @@ const Page = () => {
         <Flex justify="space-around">
           <Button
             as="a"
-            href="https://www.bitpay.co.il/app/me/F2E2ED19-B03B-65DE-7FD1-D2E55CB58CAA963D"
+            href="https://www.bitpay.co.il/app/me/AF477608-7B1D-B2FB-0B70-6C78D58BCEEA3C60"
           >
             LOAD LNX
           </Button>
