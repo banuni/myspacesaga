@@ -30,10 +30,10 @@ const barItems: [string, string, number][] = [
 ];
 
 const foodItems: [string, string, number, StaticImageData?][] = [
-  // ["Falakorian", "Tortilla", 20, tortillaImage],
+   ["Falakorian", "Tortilla", 20, tortillaImage],
   // ["Pluto", "Ice Cream", 15, icecreamImage],
-  // ["Segmented", "Waffle", 15, waffleImage],
-  ["Maker's", "Munchies", 10, nachosImage],
+  ["Segmented", "Waffle", 15, waffleImage],
+  ["Maker's", "Nachos Bowl", 15, nachosImage],
 ];
 
 const merchItems: [string, string, number][] = [
